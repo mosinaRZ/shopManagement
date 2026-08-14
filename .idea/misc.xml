@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="StoredSessionsInfoStore">
+    <option name="sessions">
+      <list>
+        <SessionInfoState>
+          <option name="id" value="20260712-005939-dfb709bb-0a5f-4c84-b7c4-1204048ad03d" />
+          <option name="lastUpdateTimestamp" value="1783805379410" />
+          <option name="responseMode" value="Agent" />
+          <option name="title" value="New Agent Session" />
+          <option name="user" value="guest" />
+        </SessionInfoState>
+        <SessionInfoState>
+          <option name="id" value="20260712-005939-e210f88d-b2e7-481e-94da-29a76ee69c13" />
+          <option name="lastUpdateTimestamp" value="1783805379413" />
+          <option name="responseMode" value="Agent" />
+          <option name="title" value="New Agent Session" />
+          <option name="user" value="rmra696@gmail.com" />
+        </SessionInfoState>
+      </list>
+    </option>
+  </component>
+</project>

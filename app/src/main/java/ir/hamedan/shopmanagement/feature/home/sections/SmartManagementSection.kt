@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ir.hamedan.shopmanagement.core.ui.components.NeumorphicCard
-import ir.hamedan.shopmanagement.core.ui.theme.Warning
+import ir.hamedan.shopmanagement.core.ui.theme.Warning as WarningColor
 
 @Composable
 fun SmartManagementSection() {
@@ -44,7 +44,7 @@ fun SmartManagementSection() {
                     Icon(
                         Icons.Default.Notifications,
                         contentDescription = "یادآوری",
-                        tint = Warning
+                        tint = WarningColor
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(

@@ -1,6 +1,10 @@
+import com.google.devtools.ksp.gradle.KspExtension
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -39,6 +43,14 @@ android {
     }
 }
 
+// اسکیمای Room برای Migration های آینده export میشه (اختیاری ولی توصیه‌شده)
+// به‌جای بلاک ksp { } که به accessor خودکار Gradle وابسته است،
+// اینجا مستقیم از KspExtension با import صریح استفاده شده تا مستقل از
+// زمان Sync کار کند.
+extensions.configure<KspExtension> {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
@@ -48,6 +60,28 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.compose.material.icons.extended)
+
+    // Navigation (برای AppNavGraph / AppRoot)
+    implementation(libs.androidx.navigation.compose)
+
+    // ViewModel + collectAsStateWithLifecycle در Compose (لازم برای معماری MVVM)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    // Room (برای AppDatabase / DatabaseModule)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // Hilt (برای RepositoryModule / DatabaseModule / @HiltViewModel)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    // DataStore (برای SessionManager در ماژول Auth)
+    implementation(libs.androidx.datastore.preferences)
+
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
@@ -55,5 +89,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.compose.material.icons.extended)
 }

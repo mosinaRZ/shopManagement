@@ -3,57 +3,37 @@ package ir.hamedan.shopmanagement.core.ui.theme
 import androidx.compose.ui.graphics.Color
 
 // ============================================================
-// Business Management - Light Color Palette
+// Neumorphic Minimalist - Auto Service Palette
 // ============================================================
 
 // Primary
-val Primary = Color(0xFF176B5B)
+val Primary = Color(0xFF2C5E8A) // آبی تیره و حرفه‌ای
 val OnPrimary = Color(0xFFFFFFFF)
 
-val PrimaryContainer = Color(0xFFB5E8DA)
-val OnPrimaryContainer = Color(0xFF002019)
+val PrimaryContainer = Color(0xFFD4E4F4)
+val OnPrimaryContainer = Color(0xFF10283C)
 
-// Secondary
-val Secondary = Color(0xFF4D635C)
-val OnSecondary = Color(0xFFFFFFFF)
+// Background & Surface (Critical for Neumorphism)
+val Background = Color(0xFFE6EBF2) // خاکستری مایل به آبی ملایم
+val OnBackground = Color(0xFF2D3748)
 
-val SecondaryContainer = Color(0xFFD0E8E0)
-val OnSecondaryContainer = Color(0xFF09201A)
+val Surface = Color(0xFFE6EBF2)
+val OnSurface = Color(0xFF2D3748)
 
-// Tertiary
-val Tertiary = Color(0xFF496277)
-val OnTertiary = Color(0xFFFFFFFF)
+val SurfaceVariant = Color(0xFFD3DAE5)
+val OnSurfaceVariant = Color(0xFF4A5568)
 
-val TertiaryContainer = Color(0xFFCDE5FA)
-val OnTertiaryContainer = Color(0xFF031E2D)
-
-// Background
-val Background = Color(0xFFF8FAF9)
-val OnBackground = Color(0xFF191C1B)
-
-// Surface
-val Surface = Color(0xFFF8FAF9)
-val OnSurface = Color(0xFF191C1B)
-
-val SurfaceVariant = Color(0xFFDDE5E1)
-val OnSurfaceVariant = Color(0xFF414946)
-
-// Outline
-val Outline = Color(0xFF717974)
-val OutlineVariant = Color(0xFFC1C9C5)
+// Neumorphic Custom Shadows (برای استفاده در کامپوننت‌ها)
+val NeumorphicLightShadow = Color(0xFFFFFFFF)
+val NeumorphicDarkShadow = Color(0xFFC4D0DF)
 
 // Error
-val Error = Color(0xFFBA1A1A)
+val Error = Color(0xFFE53E3E)
 val OnError = Color(0xFFFFFFFF)
-
-val ErrorContainer = Color(0xFFFFDAD6)
-val OnErrorContainer = Color(0xFF410002)
+val ErrorContainer = Color(0xFFFED7D7)
+val OnErrorContainer = Color(0xFF63171B)
 
 // Extra business colors
-val Success = Color(0xFF237A57)
-val Warning = Color(0xFFB86B00)
-val Info = Color(0xFF356A9A)
-
-val SuccessContainer = Color(0xFFB9F2D4)
-val WarningContainer = Color(0xFFFFDDB3)
-val InfoContainer = Color(0xFFD1E5FF)
+val Success = Color(0xFF38A169)
+val Warning = Color(0xFFDD6B20)
+val Info = Color(0xFF3182CE)

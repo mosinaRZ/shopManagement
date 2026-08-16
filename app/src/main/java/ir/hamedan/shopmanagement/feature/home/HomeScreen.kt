@@ -1,35 +1,48 @@
 package ir.hamedan.shopmanagement.feature.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import ir.hamedan.shopmanagement.feature.home.sections.DashboardSection
-import ir.hamedan.shopmanagement.feature.home.sections.ProfitabilitySection
-import ir.hamedan.shopmanagement.feature.home.sections.SmartManagementSection
+import ir.hamedan.shopmanagement.feature.home.components.HomeHeader
+import ir.hamedan.shopmanagement.feature.home.components.HomeSheetContent
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        DashboardSection()
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
 
-        ProfitabilitySection()
+    val peekHeight = screenHeight * 0.5f
 
-        SmartManagementSection()
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded,
+        skipHiddenState = true
+    )
+    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
 
-        Spacer(modifier = Modifier.height(16.dp))
-    }
+    BottomSheetScaffold(
+        modifier = modifier.fillMaxSize(),
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = peekHeight,
+        sheetShape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+        sheetContainerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        sheetShadowElevation = 0.dp,
+        sheetTonalElevation = 0.dp,
+
+        sheetDragHandle = null,
+
+        sheetContent = {
+            HomeSheetContent()
+        },
+        content = { innerPadding ->
+            HomeHeader(modifier = Modifier.padding(innerPadding))
+        }
+    )
 }

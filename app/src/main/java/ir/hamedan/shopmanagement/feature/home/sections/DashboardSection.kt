@@ -12,22 +12,19 @@ import ir.hamedan.shopmanagement.core.ui.components.NeumorphicCard
 fun DashboardSection() {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "داشبورد مدیریتی",
+            text = "داشبورد مدیریتی 📊",
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 12.dp)
         )
-
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            DashboardItem(title = "کل فروش", value = "۲۵,۰۰۰,۰۰۰ ₸", modifier = Modifier.weight(1f))
-            DashboardItem(title = "کل خرید", value = "۱۲,۵۰۰,۰۰۰ ₸", modifier = Modifier.weight(1f))
+            DashboardItem(title = "کل فروش 📈", value = "۲۵,۰۰۰,۰۰۰ ₸", modifier = Modifier.weight(1f))
+            DashboardItem(title = "کل خرید 🛒", value = "۱۲,۵۰۰,۰۰۰ ₸", modifier = Modifier.weight(1f))
         }
-
         Spacer(modifier = Modifier.height(16.dp))
-
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            DashboardItem(title = "تعداد تراکنش‌ها", value = "۱۴۲", modifier = Modifier.weight(1f))
-            DashboardItem(title = "سرمایه انبار", value = "۱۵۰,۰۰۰,۰۰۰ ₸", modifier = Modifier.weight(1f))
+            DashboardItem(title = "تراکنش‌ها 🔄", value = "۱۴۲", modifier = Modifier.weight(1f))
+            DashboardItem(title = "انبار 📦", value = "۱۵۰,۰۰۰,۰۰۰ ₸", modifier = Modifier.weight(1f))
         }
     }
 }

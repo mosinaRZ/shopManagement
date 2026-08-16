@@ -16,14 +16,14 @@ import ir.hamedan.shopmanagement.core.ui.theme.Warning as WarningColor
 
 @Composable
 fun SmartManagementSection() {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier.fillMaxWidth()
+        .padding(bottom = 16.dp)) {
         Text(
-            text = "مدیریت هوشمند",
+            text = "مدیریت هوشمند 🧠",
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 12.dp)
         )
-
         NeumorphicCard(modifier = Modifier.fillMaxWidth()) {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {

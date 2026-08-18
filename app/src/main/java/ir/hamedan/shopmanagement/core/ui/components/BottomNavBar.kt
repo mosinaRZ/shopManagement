@@ -1,6 +1,8 @@
 package ir.hamedan.shopmanagement.core.ui.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,7 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
@@ -36,6 +38,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -52,7 +55,7 @@ private data class BottomNavItem(
 private val bottomNavItems = listOf(
     BottomNavItem(Routes.Home.route, "خانه", Icons.Default.Home),
     BottomNavItem(Routes.Customers.route, "مشتریان", Icons.Default.Person),
-    BottomNavItem(Routes.AddTransaction.route, "افزودن", Icons.Default.AddCircle),
+    BottomNavItem(Routes.AddTransaction.route, "افزودن", Icons.Default.Add),
     BottomNavItem(Routes.Reports.route, "آمار", Icons.Default.List),
     BottomNavItem(Routes.Inventory.route, "انبار", Icons.Default.ShoppingCart)
 )
@@ -60,12 +63,14 @@ private val bottomNavItems = listOf(
 @Composable
 fun BottomNavBar(
     currentRoute: String?,
+    isAddMenuExpanded: Boolean = false,
+    onAddClick: () -> Unit,
     onItemClick: (String) -> Unit
 ) {
     val cornerRadius = 24.dp
-    val fabSize = 64.dp
-    val fabOffsetY = (-36).dp
-    val notchGap = 5.dp // فاصله‌ی ثابتی که بریدگی از دور دایره‌ی FAB نگه می‌داره
+    val fabSize = 55.dp
+    val fabOffsetY = (-35).dp
+    val notchGap = 5.dp
 
     val density = LocalDensity.current
     val capsuleShape = remember(density, cornerRadius, fabSize, fabOffsetY, notchGap) {
@@ -84,7 +89,6 @@ fun BottomNavBar(
             .navigationBarsPadding()
             .padding(horizontal = 12.dp)
     ) {
-        // Capsule: shape has a circular notch cut out that hugs the FAB with a 1dp gap.
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,19 +115,15 @@ fun BottomNavBar(
                             onClick = { onItemClick(item.route) }
                         )
                     } else {
-                        // Keeps the center slot so the other navigation items do not move.
                         Box(modifier = Modifier.size(24.dp))
                     }
                 }
             }
         }
 
-        // Add button sits over the notch, so its upper half is visible above the capsule.
         AddNavItem(
-            item = bottomNavItems.first { it.route == Routes.AddTransaction.route },
-            onClick = {
-                onItemClick(Routes.AddTransaction.route)
-            },
+            isExpanded = isAddMenuExpanded,
+            onClick = onAddClick,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .offset(y = fabOffsetY)
@@ -131,12 +131,6 @@ fun BottomNavBar(
     }
 }
 
-/**
- * شکل کپسول با یک بریدگی دایره‌ای که دقیقاً دور دایره‌ی FAB می‌چرخه و ۱dp
- * فاصله (notchGap توی محاسبه‌ی notchRadius) ازش نگه می‌داره. چون Shape
- * خودش از تفریق دو Path ساخته می‌شه (کپسول منهای دایره‌ی کمی بزرگ‌تر از
- * FAB)، این فاصله دقیقاً دور تا دور قوس دایره یکنواخته - نه فقط بالای بار.
- */
 private fun notchedCapsuleShape(
     density: androidx.compose.ui.unit.Density,
     cornerRadius: Dp,
@@ -174,23 +168,34 @@ private fun notchedCapsuleShape(
 
 @Composable
 private fun AddNavItem(
-    item: BottomNavItem,
+    isExpanded: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // چرخش ۴۵ درجه آیکون دکمه هنگام باز شدن
+    val rotation by animateFloatAsState(
+        targetValue = if (isExpanded) 135f else 0f,
+        animationSpec = spring(),
+        label = "fabRotation"
+    )
+
     Box(
         modifier = modifier
-            .size(64.dp)
+            .size(55.dp)
             .clip(RoundedCornerShape(50))
             .background(MaterialTheme.colorScheme.primary)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            imageVector = item.icon,
-            contentDescription = null,
+            imageVector = Icons.Default.Add,
+            contentDescription = "افزودن",
             tint = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.size(36.dp)
+            modifier = Modifier
+                .size(35.dp)
+                .graphicsLayer {
+                    rotationZ = rotation
+                }
         )
     }
 }

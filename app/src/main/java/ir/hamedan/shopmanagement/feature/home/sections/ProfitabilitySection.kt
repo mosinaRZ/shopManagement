@@ -14,7 +14,7 @@ import ir.hamedan.shopmanagement.core.ui.theme.Success
 fun ProfitabilitySection() {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "تحلیل سودآوری 💰",
+            text = "تحلیل سودآوری",
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(bottom = 12.dp)

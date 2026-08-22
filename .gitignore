@@ -1,24 +1,27 @@
-# OS
 *.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/deploymentTargetSelector.xml
 .idea/
-.gradle/
-local.properties
 .DS_Store
 /build
 /captures
-/externalNativeBuild
+.externalNativeBuild
 .cxx
+local.properties
 
-# Project
-/app/build
-/app/debug
-/app/release
+# Android build outputs
+*.apk
+*.aab
+*.dex
+*.class
 
-# Navigation Editor (Compose)
-/app/src/main/res/navigation/
-
-# Hilt generated
-/app/src/main/kotlin/com/example/shopmanagement/di/HiltModules.kt  # اگر داشتی
-
-# Logs
-*.log
+# App build directory
+app/build/
+app/build/

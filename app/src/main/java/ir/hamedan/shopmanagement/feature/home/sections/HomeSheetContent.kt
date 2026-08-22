@@ -14,12 +14,21 @@ fun HomeSheetContent(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 24.dp)
-            .padding(bottom = 32.dp),
+            .padding(bottom = 48.dp),
         verticalArrangement = Arrangement.spacedBy(28.dp)
     ) {
         Spacer(modifier = Modifier.height(5.dp))
+
+        // ۱. خلاصه داشبورد و ارقام اصلی
         DashboardSection()
+
+        // ۲. شبکه میانبر تمامی صفحات برنامه
+        QuickShortcutsSection()
+
+        // ۳. نمودار و درصد سودآوری
         ProfitabilitySection()
+
+        // ۴. مدیریت هوشمند
         SmartManagementSection()
     }
 }

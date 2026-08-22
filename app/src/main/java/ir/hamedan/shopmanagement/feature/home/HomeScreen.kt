@@ -1,6 +1,7 @@
 package ir.hamedan.shopmanagement.feature.home
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -23,7 +24,11 @@ fun HomeScreen(
     val screenHeight = configuration.screenHeightDp.dp
     val density = LocalDensity.current
 
+    // ۱. ارتفاع بسته/اولیه شیت (مشابه قبل)
     val peekHeight = (screenHeight * 0.38f).coerceIn(220.dp, 340.dp)
+
+    // ۲. حداکثر ارتفاع باز شدن شیت: همیشه به اندازه هدر (۱۰۰ دی‌پی) از بالای صفحه فاصله نگه می‌دارد تا عنوان دیده شود
+    val maxSheetHeight = screenHeight - 230.dp
 
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.PartiallyExpanded,
@@ -41,7 +46,6 @@ fun HomeScreen(
         ((partialOffset - currentOffset) / partialOffset).coerceIn(0f, 1f)
     } else 0f
 
-    // ---- state باتم‌شیت اعلان‌ها ----
     var showNotifications by remember { mutableStateOf(false) }
     var notifications by remember { mutableStateOf(sampleNotifications) }
     val unreadCount = notifications.count { !it.isRead }
@@ -56,7 +60,12 @@ fun HomeScreen(
         sheetShadowElevation = 0.dp,
         sheetTonalElevation = 0.dp,
         sheetDragHandle = null,
-        sheetContent = { HomeSheetContent() },
+        sheetContent = {
+            // اعمال محدودیت سقف ارتفاع روی محتوای شیت
+            HomeSheetContent(
+                modifier = Modifier.heightIn(max = maxSheetHeight)
+            )
+        },
         content = { innerPadding ->
             HomeHeader(
                 modifier = Modifier.padding(innerPadding),

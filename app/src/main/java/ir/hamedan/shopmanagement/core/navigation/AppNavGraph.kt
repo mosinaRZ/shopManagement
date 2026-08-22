@@ -7,7 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import ir.hamedan.shopmanagement.feature.customers.CustomerScreen
+import ir.hamedan.shopmanagement.feature.finance.FinanceScreen
 import ir.hamedan.shopmanagement.feature.home.HomeScreen
+import ir.hamedan.shopmanagement.feature.products.ProductScreen
+import ir.hamedan.shopmanagement.feature.sales.SalesScreen
 
 @Composable
 fun AppNavGraph(
@@ -39,16 +43,16 @@ fun AppNavGraph(
             HomeScreen()
         }
         composable(Routes.Customers.route) {
-            // TODO: CustomersScreen()
+            CustomerScreen()
         }
         composable(Routes.AddTransaction.route) {
-            // TODO: AddTransactionScreen()
+            SalesScreen()
         }
         composable(Routes.Reports.route) {
-            // TODO: ReportsScreen()
+            FinanceScreen()
         }
         composable(Routes.Inventory.route) {
-            // TODO: InventoryScreen()
+            ProductScreen()
         }
     }
 }

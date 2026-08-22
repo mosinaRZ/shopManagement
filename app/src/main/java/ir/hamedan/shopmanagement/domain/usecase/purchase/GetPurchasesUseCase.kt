@@ -6,15 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetPurchasesUseCase @Inject constructor(
-    private val repository: PurchaseRepository
+    private val purchaseRepository: PurchaseRepository
 ) {
-    operator fun invoke(
-        startDate: Long? = null,
-        endDate: Long? = null,
-        supplierId: Long? = null
-    ): Flow<List<Purchase>> = when {
-        supplierId != null -> repository.getPurchasesBySupplier(supplierId)
-        startDate != null && endDate != null -> repository.getPurchasesByDateRange(startDate, endDate)
-        else -> repository.getAllPurchases()
-    }
+    operator fun invoke(): Flow<List<Purchase>> = purchaseRepository.getAllPurchases()
+
+    fun byDateRange(start: Long, end: Long): Flow<List<Purchase>> =
+        purchaseRepository.getPurchasesByDateRange(start, end)
 }

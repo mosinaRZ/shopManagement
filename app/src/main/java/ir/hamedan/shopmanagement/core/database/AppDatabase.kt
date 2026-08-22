@@ -1,28 +1,19 @@
-package ir.hamedan.shopmanagement.data.local
+package ir.hamedan.shopmanagement.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import ir.hamedan.shopmanagement.data.local.dao.CustomerDao
-import ir.hamedan.shopmanagement.data.local.dao.ProductDao
-import ir.hamedan.shopmanagement.data.local.dao.PurchaseDao
-import ir.hamedan.shopmanagement.data.local.dao.SaleDao
-import ir.hamedan.shopmanagement.data.local.dao.UserDao
-import ir.hamedan.shopmanagement.data.local.entity.CustomerEntity
-import ir.hamedan.shopmanagement.data.local.entity.ProductEntity
-import ir.hamedan.shopmanagement.data.local.entity.PurchaseEntity
-import ir.hamedan.shopmanagement.data.local.entity.SaleEntity
-import ir.hamedan.shopmanagement.data.local.entity.UserEntity
+import ir.hamedan.shopmanagement.data.local.dao.*
+import ir.hamedan.shopmanagement.data.local.entity.*
 
-/**
- * توجه: با اضافه شدن ماژول‌های Supplier/Expense/Income باید Entity هایشان
- * به این لیست و version باید +1 شود (به همراه Migration مناسب).
- */
 @Database(
     entities = [
         ProductEntity::class,
         CustomerEntity::class,
+        SupplierEntity::class,
         SaleEntity::class,
         PurchaseEntity::class,
+        ExpenseEntity::class,
+        IncomeEntity::class,
         UserEntity::class
     ],
     version = 1,
@@ -31,7 +22,10 @@ import ir.hamedan.shopmanagement.data.local.entity.UserEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
     abstract fun customerDao(): CustomerDao
+    abstract fun supplierDao(): SupplierDao
     abstract fun saleDao(): SaleDao
     abstract fun purchaseDao(): PurchaseDao
+    abstract fun expenseDao(): ExpenseDao
+    abstract fun incomeDao(): IncomeDao
     abstract fun userDao(): UserDao
 }

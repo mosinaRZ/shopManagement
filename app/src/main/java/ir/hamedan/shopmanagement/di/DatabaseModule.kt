@@ -8,11 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ir.hamedan.shopmanagement.core.database.AppDatabase
-import ir.hamedan.shopmanagement.data.local.dao.CustomerDao
-import ir.hamedan.shopmanagement.data.local.dao.ProductDao
-import ir.hamedan.shopmanagement.data.local.dao.PurchaseDao
-import ir.hamedan.shopmanagement.data.local.dao.SaleDao
-import ir.hamedan.shopmanagement.data.local.dao.UserDao
+import ir.hamedan.shopmanagement.data.local.dao.*
 import javax.inject.Singleton
 
 @Module
@@ -21,10 +17,14 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase =
-        Room.databaseBuilder(context, AppDatabase::class.java, "shopmanagement.db")
-            // .fallbackToDestructiveMigration() // فقط در توسعه؛ برای production migration واقعی بنویس
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "shop_management.db"
+        ).fallbackToDestructiveMigration()
             .build()
+    }
 
     @Provides
     fun provideProductDao(db: AppDatabase): ProductDao = db.productDao()
@@ -40,4 +40,13 @@ object DatabaseModule {
 
     @Provides
     fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
+
+    @Provides
+    fun provideSupplierDao(db: AppDatabase): SupplierDao = db.supplierDao()
+
+    @Provides
+    fun provideIncomeDao(db: AppDatabase): IncomeDao = db.incomeDao()
+
+    @Provides
+    fun provideExpenseDao(db: AppDatabase): ExpenseDao = db.expenseDao()
 }

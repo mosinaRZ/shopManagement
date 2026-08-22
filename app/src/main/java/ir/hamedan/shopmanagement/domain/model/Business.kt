@@ -1,4 +1,9 @@
 package ir.hamedan.shopmanagement.domain.model
 
-class Business {
-}
+data class Business(
+    val name: String = "فروشگاه من",
+    val ownerName: String = "",
+    val phone: String = "",
+    val address: String = "",
+    val currency: String = "تومان"
+)

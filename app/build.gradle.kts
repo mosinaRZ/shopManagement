@@ -43,10 +43,6 @@ android {
     }
 }
 
-// اسکیمای Room برای Migration های آینده export میشه (اختیاری ولی توصیه‌شده)
-// به‌جای بلاک ksp { } که به accessor خودکار Gradle وابسته است،
-// اینجا مستقیم از KspExtension با import صریح استفاده شده تا مستقل از
-// زمان Sync کار کند.
 extensions.configure<KspExtension> {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
@@ -61,6 +57,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.lottie.compose)
 
     // Navigation (برای AppNavGraph / AppRoot)
     implementation(libs.androidx.navigation.compose)

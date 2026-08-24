@@ -9,13 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ir.hamedan.shopmanagement.core.ui.components.DoubleBackToExitHandler
 import ir.hamedan.shopmanagement.feature.auth.sections.LoginFormSection
 
 @Composable
 fun LoginScreen(
-    onLoginSuccess: () -> Unit = {},
+    onLoginSuccess: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // جلوگیری از خروج ناخواسته با دکمه بک
+    DoubleBackToExitHandler()
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -35,7 +39,10 @@ fun LoginScreen(
             )
 
             LoginFormSection(
-                onLoginClick = { _, _ -> onLoginSuccess() }
+                onLoginClick = { _, _ ->
+                    // ورود مستقیم و بدون شرط به صفحه خانه
+                    onLoginSuccess()
+                }
             )
         }
     }

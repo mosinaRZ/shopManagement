@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import ir.hamedan.shopmanagement.core.ui.components.DoubleBackToExitHandler
 import ir.hamedan.shopmanagement.feature.home.sections.HomeHeader
 import ir.hamedan.shopmanagement.feature.home.sections.HomeSheetContent
 import ir.hamedan.shopmanagement.feature.home.sections.NotificationsBottomSheet
@@ -20,6 +21,9 @@ import ir.hamedan.shopmanagement.feature.home.sections.sampleNotifications
 fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
+    DoubleBackToExitHandler()
+
+
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val density = LocalDensity.current

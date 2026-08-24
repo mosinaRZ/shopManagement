@@ -16,6 +16,7 @@ import ir.hamedan.shopmanagement.feature.products.ProductScreen
 import ir.hamedan.shopmanagement.feature.purchases.PurchaseScreen
 import ir.hamedan.shopmanagement.feature.sales.SalesScreen
 import ir.hamedan.shopmanagement.feature.settings.SettingsScreen
+import ir.hamedan.shopmanagement.feature.splash.SplashScreen
 
 @Composable
 fun AppNavGraph(
@@ -40,9 +41,29 @@ fun AppNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = Routes.Home.route,
+        startDestination = Routes.Splash.route,
         modifier = modifier.fillMaxSize()
     ) {
+        composable(Routes.Splash.route) {
+            SplashScreen(
+                onNavigateToLogin = {
+                    navController.navigate(Routes.Login.route) {
+                        popUpTo(Routes.Splash.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Routes.Login.route) {
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(Routes.Home.route) {
+                        popUpTo(Routes.Login.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable(Routes.Home.route) { HomeScreen() }
         composable(Routes.Customers.route) { CustomerScreen() }
         composable(Routes.AddTransaction.route) { SalesScreen() }
@@ -51,6 +72,5 @@ fun AppNavGraph(
         composable(Routes.Employees.route) { EmployeeScreen() }
         composable(Routes.Purchases.route) { PurchaseScreen() }
         composable(Routes.Settings.route) { SettingsScreen() }
-        composable(Routes.Login.route) { LoginScreen() }
     }
 }

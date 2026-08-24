@@ -30,44 +30,55 @@ fun AppRoot() {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
+    // باتم‌بار فقط در صفحاتی که غیر از اسپلش و لاگین هستند نمایش داده شود
+    val shouldShowBottomBar = currentRoute != null &&
+            currentRoute != Routes.Splash.route &&
+            currentRoute != Routes.Login.route
+
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
             bottomBar = {
-                BottomNavBar(
-                    currentRoute = currentRoute,
-                    isAddMenuExpanded = isAddMenuExpanded,
-                    onAddClick = { isAddMenuExpanded = !isAddMenuExpanded },
-                    onItemClick = { route ->
-                        isAddMenuExpanded = false
-                        if (route != currentRoute) {
-                            scope.launch {
-                                NavigationManager.navigateTo(
-                                    route = route,
-                                    popUpToRoute = Routes.Home.route,
-                                    inclusive = false
-                                )
+                if (shouldShowBottomBar) {
+                    BottomNavBar(
+                        currentRoute = currentRoute,
+                        isAddMenuExpanded = isAddMenuExpanded,
+                        onAddClick = { isAddMenuExpanded = !isAddMenuExpanded },
+                        onItemClick = { route ->
+                            isAddMenuExpanded = false
+                            if (route != currentRoute) {
+                                scope.launch {
+                                    NavigationManager.navigateTo(
+                                        route = route,
+                                        popUpToRoute = Routes.Home.route,
+                                        inclusive = false
+                                    )
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
         ) { innerPadding ->
             AppNavGraph(
                 navController = navController,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(
+                    if (shouldShowBottomBar) innerPadding else androidx.compose.foundation.layout.PaddingValues()
+                )
             )
         }
 
-        // لایه اورلی اکشن‌های سریع نئومورفیسمی
-        QuickAddOverlay(
-            expanded = isAddMenuExpanded,
-            onDismiss = { isAddMenuExpanded = false },
-            onActionClick = { route ->
-                isAddMenuExpanded = false
-                scope.launch {
-                    NavigationManager.navigateTo(route)
+        // لایه اورلی اکشن‌های سریع نئومورفیسمی (فقط در صورت نمایش باتم‌بار)
+        if (shouldShowBottomBar) {
+            QuickAddOverlay(
+                expanded = isAddMenuExpanded,
+                onDismiss = { isAddMenuExpanded = false },
+                onActionClick = { route ->
+                    isAddMenuExpanded = false
+                    scope.launch {
+                        NavigationManager.navigateTo(route)
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }

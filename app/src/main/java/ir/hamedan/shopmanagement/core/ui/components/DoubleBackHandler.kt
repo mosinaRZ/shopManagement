@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DoubleBackToExitHandler(
-    message: String = "برای خروج از برنامه، دوباره دکمه بازگشت را لمس کنید"
+    message: String = "برای خروج، دوباره دکمه بازگشت را لمس کنید"
 ) {
     val context = LocalContext.current
     val activity = context as? Activity

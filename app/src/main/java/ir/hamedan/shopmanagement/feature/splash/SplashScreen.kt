@@ -50,7 +50,7 @@ fun SplashScreen(
 
     // هدایت به صفحه لاگین پس از ۲.۵ ثانیه
     LaunchedEffect(Unit) {
-        delay(2500L)
+        delay(3000L)
         onNavigateToLogin()
     }
 
@@ -68,14 +68,7 @@ fun SplashScreen(
             LottieAnimation(
                 composition = composition,
                 progress = { progress },
-                modifier = Modifier.size(190.dp)
-            )
-
-            Text(
-                text = "نرم‌افزار مدیریت فروشگاه",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                modifier = Modifier.size(500.dp)
             )
         }
 

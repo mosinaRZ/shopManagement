@@ -258,7 +258,7 @@ fun HomeHeader(
             // ۳. زیرعنوان -> حرکت به سمت بالا (دل متن) و محو شدن
             // -----------------------------------------------------
             Text(
-                text = "سیستم یکپارچه مدیریت و حسابداری ✨",
+                text = "سیستم هوشمند مدیریت و حسابداری شما ✨",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme
                     .onPrimaryContainer

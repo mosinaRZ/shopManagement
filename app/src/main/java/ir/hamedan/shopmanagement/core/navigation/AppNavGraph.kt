@@ -18,6 +18,7 @@ import ir.hamedan.shopmanagement.feature.employees.EmployeeScreen
 import ir.hamedan.shopmanagement.feature.finance.FinanceScreen
 import ir.hamedan.shopmanagement.feature.home.HomeScreen
 import ir.hamedan.shopmanagement.feature.products.ProductScreen
+import ir.hamedan.shopmanagement.feature.profile.ProfileScreen
 import ir.hamedan.shopmanagement.feature.purchases.PurchaseScreen
 import ir.hamedan.shopmanagement.feature.sales.SalesScreen
 import ir.hamedan.shopmanagement.feature.settings.SettingsScreen
@@ -92,6 +93,17 @@ fun AppNavGraph(
                 onLoginSuccess = {
                     navController.navigate(Routes.Home.route) {
                         popUpTo(Routes.Login.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
+        composable(Routes.Profile.route) {
+            ProfileScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onLogoutSuccess = {
+                    navController.navigate(Routes.Login.route) {
+                        popUpTo(0) { inclusive = true }
                     }
                 }
             )

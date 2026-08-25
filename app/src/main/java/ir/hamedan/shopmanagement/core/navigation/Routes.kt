@@ -11,6 +11,7 @@ sealed class Routes(val route: String, val title: String) {
     object Employees : Routes("employees", "پرسنل و حقوق")
     object Purchases : Routes("purchases", "خرید و فاکتور")
     object Settings : Routes("settings", "تنظیمات")
+    object Profile : Routes("profile", "پروفایل کاربری")
 
     companion object {
         val bottomNavRoutes = listOf(Home, Customers, AddTransaction, Reports, Inventory)

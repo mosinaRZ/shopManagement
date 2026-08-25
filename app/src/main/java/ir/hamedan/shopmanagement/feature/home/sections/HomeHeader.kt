@@ -1,6 +1,7 @@
 package ir.hamedan.shopmanagement.feature.home.sections
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material.icons.rounded.Storefront
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +24,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ir.hamedan.shopmanagement.core.navigation.NavigationManager
+import ir.hamedan.shopmanagement.core.navigation.Routes
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeHeader(
@@ -30,6 +35,8 @@ fun HomeHeader(
     onNotificationsClick: () -> Unit = {}
 ) {
     val progress = sheetProgress.coerceIn(0f, 1f)
+
+    val scope = rememberCoroutineScope()
 
     /*
      * SmoothStep
@@ -75,7 +82,12 @@ fun HomeHeader(
                             .onPrimaryContainer
                             .copy(alpha = 0.1f)
                     )
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .clickable {
+                        scope.launch {
+                            NavigationManager.navigateTo(Routes.Profile.route)
+                        }
+                    },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(

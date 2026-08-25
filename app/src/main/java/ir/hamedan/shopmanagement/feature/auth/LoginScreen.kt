@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -13,8 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -34,6 +38,10 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by remember { mutableStateOf(false) }
+
+    // مدیریت فوکوس و کیبورد
+    val passwordFocusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     Box(
         modifier = modifier
@@ -118,7 +126,7 @@ fun LoginScreen(
                         .padding(20.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    // نام کاربری: حداکثر 20 کاراکتر
+                    // نام کاربری: دکمه Next روی کیبورد و انتقال به گذرواژه
                     OutlinedTextField(
                         value = username,
                         onValueChange = {
@@ -134,12 +142,20 @@ fun LoginScreen(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         },
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Next
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                passwordFocusRequester.requestFocus()
+                            }
+                        ),
                         shape = RoundedCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
 
-                    // کلمه عبور: حداکثر 24 کاراکتر
+                    // کلمه عبور: دکمه Done روی کیبورد و بستن کیبورد
                     OutlinedTextField(
                         value = password,
                         onValueChange = {
@@ -177,10 +193,18 @@ fun LoginScreen(
                             PasswordVisualTransformation()
                         },
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
                         ),
                         shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(passwordFocusRequester),
                         singleLine = true
                     )
                 }

@@ -2,7 +2,7 @@ package ir.hamedan.shopmanagement.data.repository
 
 import ir.hamedan.shopmanagement.core.security.PasswordHasher
 import ir.hamedan.shopmanagement.core.security.SessionManager
-import ir.hamedan.shopmanagement.core.util.AppException
+import ir.hamedan.shopmanagement.core.utils.AppException
 import ir.hamedan.shopmanagement.data.local.dao.UserDao
 import ir.hamedan.shopmanagement.data.local.entity.UserEntity
 import ir.hamedan.shopmanagement.data.mapper.toDomain

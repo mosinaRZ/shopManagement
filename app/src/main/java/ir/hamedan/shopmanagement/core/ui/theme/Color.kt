@@ -23,10 +23,6 @@ val OnSurface = Color(0xFF2D3748)
 val SurfaceVariant = Color(0xFFD3DAE5)
 val OnSurfaceVariant = Color(0xFF4A5568)
 
-// Neumorphic Custom Shadows (برای استفاده در کامپوننت‌ها)
-val NeumorphicLightShadow = Color(0xFFFFFFFF)
-val NeumorphicDarkShadow = Color(0xFFC4D0DF)
-
 // Error
 val Error = Color(0xFFE53E3E)
 val OnError = Color(0xFFFFFFFF)

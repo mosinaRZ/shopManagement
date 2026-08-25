@@ -1,4 +1,4 @@
-package ir.hamedan.shopmanagement.core.util
+package ir.hamedan.shopmanagement.core.utils
 
 /**
  * سلسله‌مراتب خطاهای سفارشی اپ. تمام Repository/UseCase ها به‌جای پرتاب

@@ -1,6 +1,6 @@
 package ir.hamedan.shopmanagement.domain.usecase.sale
 
-import ir.hamedan.shopmanagement.core.util.AppException
+import ir.hamedan.shopmanagement.core.utils.AppException
 import ir.hamedan.shopmanagement.domain.model.Sale
 import ir.hamedan.shopmanagement.domain.repository.CustomerRepository
 import ir.hamedan.shopmanagement.domain.repository.ProductRepository

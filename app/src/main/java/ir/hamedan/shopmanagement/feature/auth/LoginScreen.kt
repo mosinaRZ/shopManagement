@@ -1,189 +1,199 @@
 package ir.hamedan.shopmanagement.feature.auth
 
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountBalanceWallet
-import androidx.compose.material.icons.rounded.Money
-import androidx.compose.material.icons.rounded.Sell
-import androidx.compose.material.icons.rounded.ShoppingCart
-import androidx.compose.material.icons.rounded.Storefront
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import ir.hamedan.shopmanagement.core.ui.components.DoubleBackToExitHandler
-import ir.hamedan.shopmanagement.feature.auth.sections.LoginFormSection
+import ir.hamedan.shopmanagement.feature.auth.sections.AnimatedLoginButton
+import ir.hamedan.shopmanagement.feature.auth.sections.FloatingAuthIcon
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // جلوگیری از خروج ناخواسته با دکمه بک
     DoubleBackToExitHandler()
 
-    // انیمیشن ورود ملایم برای هدر و پنل فرم (هم‌راستا با ریتم انیمیشن HomeHeader)
-    var isVisible by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) { isVisible = true }
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var isPasswordVisible by remember { mutableStateOf(false) }
 
-    val panelOffset by animateDpAsState(
-        targetValue = if (isVisible) 0.dp else 48.dp,
-        animationSpec = tween(durationMillis = 550, easing = FastOutSlowInEasing),
-        label = "panelOffset"
-    )
-    val contentAlpha by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(durationMillis = 450),
-        label = "contentAlpha"
-    )
-    val logoScale by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0.6f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
-        label = "logoScale"
-    )
-
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val headerHeight = (screenHeight * 0.34f).coerceIn(200.dp, 300.dp)
-
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .background(MaterialTheme.colorScheme.background)
     ) {
+        // ۱. آیکون‌های متحرک و شناور پس‌زمینه
+        FloatingAuthIcon(
+            icon = Icons.Default.Storefront,
+            initialOffsetX = 30.dp,
+            initialOffsetY = 70.dp,
+            targetOffsetY = 95.dp,
+            durationMillis = 2600
+        )
 
-        // =========================================================
-        // هدر برند — دقیقاً هم‌راستا با پس‌زمینه و آیکون‌های شناور HomeHeader
-        // =========================================================
-        BoxWithConstraints(
+        FloatingAuthIcon(
+            icon = Icons.Default.PointOfSale,
+            initialOffsetX = 290.dp,
+            initialOffsetY = 110.dp,
+            targetOffsetY = 80.dp,
+            durationMillis = 3100
+        )
+
+        // ۲. کانتینر اصلی
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(headerHeight)
+                .fillMaxSize()
+                .imePadding()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            val width = maxWidth
-            val height = maxHeight
+            Spacer(modifier = Modifier.height(40.dp))
 
-            FloatingAuthIcon(Icons.Rounded.ShoppingCart, 0.16f, 0.28f, width, height, 26.dp, -18f)
-            FloatingAuthIcon(Icons.Rounded.Sell, 0.83f, 0.24f, width, height, 20.dp, 16f)
-            FloatingAuthIcon(Icons.Rounded.AccountBalanceWallet, 0.86f, 0.64f, width, height, 24.dp, 22f)
-            FloatingAuthIcon(Icons.Rounded.Money, 0.14f, 0.68f, width, height, 19.dp, -22f)
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
-                    .graphicsLayer {
-                        alpha = contentAlpha
-                        scaleX = logoScale
-                        scaleY = logoScale
-                    },
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(14.dp)
-            ) {
-                Text(
-                    text = "نرم‌افزار مدیریت فروشگاه",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Text(
-                    text = "سیستم یکپارچه مدیریت و حسابداری",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-
-        // =========================================================
-        // پنل فرم ورود — همان شکل sheet با گوشه‌های ۳۲ دی‌پی مثل HomeScreen
-        // =========================================================
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .graphicsLayer {
-                    translationY = panelOffset.toPx()
-                    alpha = contentAlpha
-                },
-            shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-            color = MaterialTheme.colorScheme.surface,
-            shadowElevation = 0.dp,
-            tonalElevation = 0.dp
-        ) {
+            // لوگو و عنوان
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 24.dp),
-                contentAlignment = Alignment.TopCenter
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
             ) {
-                LoginFormSection(
-                    modifier = Modifier.padding(top = 32.dp, bottom = 24.dp),
-                    onLoginClick = { _, _ ->
-                        // ورود مستقیم و بدون شرط به صفحه خانه
-                        onLoginSuccess()
-                    }
+                Icon(
+                    imageVector = Icons.Default.Login,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(42.dp)
                 )
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "نرم‌افزار جامع مدیریت فروشگاه",
+                fontSize = 22.sp,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Text(
+                text = "برای دسترسی به اطلاعات حساب خود وارد شوید",
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 6.dp)
+            )
+
+            Spacer(modifier = Modifier.height(36.dp))
+
+            // فیلدهای ورودی نام کاربری و رمز عبور
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // نام کاربری: حداکثر 20 کاراکتر
+                    OutlinedTextField(
+                        value = username,
+                        onValueChange = {
+                            if (it.length <= 20) {
+                                username = it
+                            }
+                        },
+                        label = { Text("نام کاربری") },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Person,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
+                    )
+
+                    // کلمه عبور: حداکثر 24 کاراکتر
+                    OutlinedTextField(
+                        value = password,
+                        onValueChange = {
+                            if (it.length <= 24) {
+                                password = it
+                            }
+                        },
+                        label = { Text("کلمه عبور") },
+                        leadingIcon = {
+                            Icon(
+                                Icons.Default.Lock,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {
+                                    isPasswordVisible = !isPasswordVisible
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = if (isPasswordVisible) {
+                                        Icons.Default.Visibility
+                                    } else {
+                                        Icons.Default.VisibilityOff
+                                    },
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                        visualTransformation = if (isPasswordVisible) {
+                            VisualTransformation.None
+                        } else {
+                            PasswordVisualTransformation()
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            // دکمه ورود هوشمند
+            AnimatedLoginButton(
+                onClick = onLoginSuccess
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
         }
     }
-}
-
-/**
- * آیکون تزئینی شناور در هدر ورود، هم‌راستا با FloatingHeaderIcon در HomeHeader
- */
-@Composable
-private fun FloatingAuthIcon(
-    icon: ImageVector,
-    xFraction: Float,
-    yFraction: Float,
-    containerWidth: Dp,
-    containerHeight: Dp,
-    size: Dp,
-    rotation: Float
-) {
-    Icon(
-        imageVector = icon,
-        contentDescription = null,
-        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.35f),
-        modifier = Modifier
-            .size(size)
-            .offset(
-                x = containerWidth * xFraction - size / 2,
-                y = containerHeight * yFraction - size / 2
-            )
-            .graphicsLayer { rotationZ = rotation }
-    )
 }

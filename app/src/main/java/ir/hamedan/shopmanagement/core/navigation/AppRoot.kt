@@ -1,6 +1,7 @@
 package ir.hamedan.shopmanagement.app
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -30,10 +31,8 @@ fun AppRoot() {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
-    // باتم‌بار فقط در صفحاتی که غیر از اسپلش و لاگین هستند نمایش داده شود
-    val shouldShowBottomBar = currentRoute != null &&
-            currentRoute != Routes.Splash.route &&
-            currentRoute != Routes.Login.route
+    // باتم‌بار فقط و فقط در ۵ صفحه اصلی که در لیست bottomNavRoutes هستند نمایش داده می‌شود
+    val shouldShowBottomBar = Routes.bottomNavRoutes.any { it.route == currentRoute }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -62,12 +61,12 @@ fun AppRoot() {
             AppNavGraph(
                 navController = navController,
                 modifier = Modifier.padding(
-                    if (shouldShowBottomBar) innerPadding else androidx.compose.foundation.layout.PaddingValues()
+                    if (shouldShowBottomBar) innerPadding else PaddingValues()
                 )
             )
         }
 
-        // لایه اورلی اکشن‌های سریع نئومورفیسمی (فقط در صورت نمایش باتم‌بار)
+        // لایه اورلی افزودن سریع فقط وقتی که در صفحات باتم‌بار هستیم
         if (shouldShowBottomBar) {
             QuickAddOverlay(
                 expanded = isAddMenuExpanded,

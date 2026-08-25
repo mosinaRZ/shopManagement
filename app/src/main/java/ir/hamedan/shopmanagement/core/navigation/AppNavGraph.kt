@@ -1,5 +1,10 @@
 package ir.hamedan.shopmanagement.core.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,7 +47,35 @@ fun AppNavGraph(
     NavHost(
         navController = navController,
         startDestination = Routes.Splash.route,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
+        // انیمیشن اسلاید ورود صفحه جدید (از سمت راست به چپ همراه با FadeIn)
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(300))
+        },
+        // انیمیشن خروج صفحه فعلی (اسلاید به چپ همراه با FadeOut)
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing)
+            ) + fadeOut(animationSpec = tween(300))
+        },
+        // انیمیشن بازگشت (Pop Enter - اسلاید معکوس از چپ به راست)
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(300))
+        },
+        // انیمیشن خروج حین بازگشت (Pop Exit - اسلاید به سمت راست)
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing)
+            ) + fadeOut(animationSpec = tween(300))
+        }
     ) {
         composable(Routes.Splash.route) {
             SplashScreen(

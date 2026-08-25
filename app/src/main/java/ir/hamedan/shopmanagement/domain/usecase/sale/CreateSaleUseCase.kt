@@ -1,51 +1,27 @@
 package ir.hamedan.shopmanagement.domain.usecase.sale
 
-import ir.hamedan.shopmanagement.core.utils.AppException
+import ir.hamedan.shopmanagement.core.utils.ValidationUtils
 import ir.hamedan.shopmanagement.domain.model.Sale
-import ir.hamedan.shopmanagement.domain.repository.CustomerRepository
-import ir.hamedan.shopmanagement.domain.repository.ProductRepository
 import ir.hamedan.shopmanagement.domain.repository.SaleRepository
 import javax.inject.Inject
 
-/**
- * ثبت یک فروش شامل سه گام است که این UseCase هماهنگشون می‌کند:
- * ۱. اعتبارسنجی و بررسی کافی بودن موجودی محصول
- * ۲. ثبت رکورد فروش
- * ۳. کسر موجودی از انبار و در صورت نسیه بودن، افزایش بدهی مشتری
- *
- * نکته: در نسخه‌ی production پیشنهاد می‌شود این عملیات داخل یک Room @Transaction
- * (مثلاً از طریق AppDatabase.withTransaction {}) اجرا شود تا atomic باشد.
- */
 class CreateSaleUseCase @Inject constructor(
-    private val saleRepository: SaleRepository,
-    private val productRepository: ProductRepository,
-    private val customerRepository: CustomerRepository
+    private val saleRepository: SaleRepository
 ) {
-    suspend operator fun invoke(sale: Sale): Long {
+    suspend operator fun invoke(sale: Sale): Result<Long> {
         if (sale.quantity <= 0) {
-            throw AppException.ValidationException("تعداد", "باید بزرگ‌تر از صفر باشد")
+            return Result.failure(IllegalArgumentException("تعداد فروش باید بیشتر از صفر باشد"))
         }
-        if (sale.unitPrice < 0 || sale.paidAmount < 0) {
-            throw AppException.ValidationException("مبلغ", "نمی‌تواند منفی باشد")
-        }
-
-        val product = productRepository.getProductById(sale.productId)
-            ?: throw AppException.NotFoundException("محصول", sale.productId)
-
-        if (product.quantity < sale.quantity) {
-            throw AppException.ValidationException(
-                "موجودی",
-                "موجودی کافی نیست (موجودی فعلی: ${product.quantity})"
-            )
+        if (!ValidationUtils.isValidPrice(sale.unitPrice)) {
+            return Result.failure(IllegalArgumentException("قیمت کالا نامعتبر است"))
         }
 
-        val saleId = saleRepository.addSale(sale)
-        productRepository.adjustQuantity(sale.productId, -sale.quantity)
-
-        if (sale.remainingAmount > 0.0 && sale.customerId != null) {
-            customerRepository.adjustDebt(sale.customerId, sale.remainingAmount)
+        return try {
+            // فقط متد addSale صدا زده می‌شود (کسر انبار و ثبت بدهی درون ریپازیتوری انجام می‌گیرد)
+            val saleId = saleRepository.addSale(sale)
+            Result.success(saleId)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-
-        return saleId
     }
 }

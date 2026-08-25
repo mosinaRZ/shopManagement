@@ -1,20 +1,23 @@
-package ir.hamedan.shopmanagement.core.security
+package ir.hamedan.shopmanagement.core.utils
 
 import java.security.MessageDigest
 
-/**
- * هش ساده‌ی رمز عبور برای اپ آفلاین لوکال.
- * توجه: برای اپ‌هایی که سرور/بک‌اند دارند بهتره از bcrypt/Argon2 روی سرور استفاده شود؛
- * این پیاده‌سازی برای دیتابیس لوکال Room کافی و رایج است.
- */
 object PasswordHasher {
-    private const val SALT = "shopmanagement_v1_salt"
 
-    fun hash(rawPassword: String): String {
-        val digest = MessageDigest.getInstance("SHA-256")
-        val bytes = digest.digest((SALT + rawPassword).toByteArray(Charsets.UTF_8))
-        return bytes.joinToString("") { "%02x".format(it) }
+    /**
+     * هش کردن امن کلمه عبور با الگوریتم SHA-256
+     */
+    fun hash(password: String): String {
+        val bytes = password.toByteArray(Charsets.UTF_8)
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
 
-    fun verify(rawPassword: String, hashed: String): Boolean = hash(rawPassword) == hashed
+    /**
+     * بررسی تطابق پسورد ورودی با هش ذخیره‌شده
+     */
+    fun verify(password: String, expectedHash: String): Boolean {
+        return hash(password).equals(expectedHash, ignoreCase = true)
+    }
 }
